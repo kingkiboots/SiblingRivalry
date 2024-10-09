@@ -3,17 +3,12 @@ import { INVADERS_LIST, setGameBoard } from "@/entities/mechanics";
 import { Grid, Heading } from "@chakra-ui/react";
 import { DragEventHandler } from "react";
 import { UnitCell, UnitCellGridItem } from "@/shared/ui";
+import { replaceArrayElOf } from "@/shared/lib";
 import { grayTile, redTile } from "@/shared/assets";
 
 export const MainGameBoardWidget = () => {
-  // const [gameBoard, setGameBoard] = useState<Array<Invader | null>>(
-  //   Array.from({ length: 40 }, () => null)
-  // );
-
   const gameBoard = useAppSelector((state) => state.gameBoard.value);
   const dispatch = useAppDispatch();
-
-  console.debug("gameBoard", gameBoard);
 
   const handleDragOver: DragEventHandler = (e) => {
     e.preventDefault();
@@ -26,7 +21,10 @@ export const MainGameBoardWidget = () => {
     );
 
     if (currentIndex === -1) {
-      console.error("currentIndex -1인디요;");
+      console.debug(
+        "[MainGameBoardWidget,handleDrop] currentIndex is undefined",
+        e.currentTarget
+      );
       return;
     }
 
@@ -36,16 +34,20 @@ export const MainGameBoardWidget = () => {
     );
 
     if (!invaderObjectToAdd) {
-      console.error("invaderObjectToAdd가 없대요;");
+      console.debug(
+        "[MainGameBoardWidget,handleDrop] No Found invaderObjectToAdd by",
+        invaderTypeCode
+      );
       return;
     }
 
     dispatch(
-      setGameBoard([
-        ...gameBoard.slice(0, currentIndex),
-        { ...invaderObjectToAdd, onBoardStatus: "on" },
-        ...gameBoard.slice(currentIndex + 1, gameBoard.length),
-      ])
+      setGameBoard(
+        replaceArrayElOf(gameBoard, currentIndex, {
+          ...invaderObjectToAdd,
+          onBoardStatus: "on",
+        })
+      )
     );
   };
 
@@ -63,8 +65,6 @@ export const MainGameBoardWidget = () => {
               w="60px"
               h="60px"
               backgroundImage={isEven ? redTile : grayTile}
-                isEven ? "redtile" : "graytile"
-              }.webp`}
               data-index={index}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
