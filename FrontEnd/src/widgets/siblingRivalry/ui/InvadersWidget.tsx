@@ -1,22 +1,21 @@
 import { INVADERS_LIST } from "@/entities/mechanics";
 import { UnitCell, UnitCellGridItem } from "@/shared/ui";
 import { Box, Grid, Heading } from "@chakra-ui/react";
-import { DragEventHandler } from "react";
+import { DragEventHandler, TouchEventHandler } from "react";
 
 export const InvadersWidget = () => {
   const handleDragStart: DragEventHandler = (e) => {
-    console.log("Invaders :: handleDragStart");
+    console.debug(
+      "[InvadersWidget, handleDragStart] Invaders :: handleDragStart"
+    );
     const invaderTypeCode = (e.currentTarget as HTMLElement).dataset.typecode;
     if (!invaderTypeCode) {
-      console.error("[InvadersWidget,handleDragStart] Got No Typecode");
+      console.debug("[InvadersWidget,handleDragStart] Got No Typecode");
       return;
     }
     e.dataTransfer.setData("typeCode", invaderTypeCode);
   };
 
-  const handleDragEnd: DragEventHandler = (e) => {
-    console.log("Invaders :: handleDragEnd");
-  };
   return (
     <>
       <Heading
@@ -65,7 +64,6 @@ export const InvadersWidget = () => {
                   invader={invader}
                   data-typecode={invader.typeCode}
                   onDragStart={handleDragStart}
-                  onDragEnd={handleDragEnd}
                 />
               </UnitCellGridItem>
             );
