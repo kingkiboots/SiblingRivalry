@@ -1,3 +1,5 @@
+export * from "./consts/invadersConsts";
+
 export {
   flagGrunt,
   spearGrunt,
