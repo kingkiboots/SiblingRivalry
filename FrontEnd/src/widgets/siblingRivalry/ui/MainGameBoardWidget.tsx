@@ -3,6 +3,7 @@ import { INVADERS_LIST, setGameBoard } from "@/entities/mechanics";
 import { Grid, Heading } from "@chakra-ui/react";
 import { DragEventHandler } from "react";
 import { UnitCell, UnitCellGridItem } from "@/shared/ui";
+import { grayTile, redTile } from "@/shared/assets";
 
 export const MainGameBoardWidget = () => {
   // const [gameBoard, setGameBoard] = useState<Array<Invader | null>>(
@@ -61,7 +62,7 @@ export const MainGameBoardWidget = () => {
               key={index}
               w="60px"
               h="60px"
-              backgroundImage={`/assets/Sprites/${
+              backgroundImage={isEven ? redTile : grayTile}
                 isEven ? "redtile" : "graytile"
               }.webp`}
               data-index={index}
